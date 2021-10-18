@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 
@@ -16,6 +17,7 @@ import { StudentService } from './student.service';
 
 import { CreateStudentDTO } from './dto/create-student.dto';
 import { GetStudentDetailsParamsDTO } from './dto/get-student-details.dto';
+import { UpdateStudentDTO } from './dto/update-student.dto';
 
 @Controller('student')
 export class StudentController {
@@ -26,6 +28,7 @@ export class StudentController {
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.getStudents();
+
     return response.status(HttpStatus.OK).json(result);
   }
 
@@ -51,6 +54,20 @@ export class StudentController {
   ): Promise<Response<any, Record<string, any>>> {
     const result = await this.studentService.getStudentDetails(
       params.studentId,
+    );
+
+    return response.status(HttpStatus.OK).json(result);
+  }
+
+  @Put('/:studentId')
+  async updateStudent(
+    @Param() params: GetStudentDetailsParamsDTO,
+    @Body() body: UpdateStudentDTO,
+    @Res() response: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const result = await this.studentService.updateStudent(
+      params.studentId,
+      body,
     );
 
     return response.status(HttpStatus.OK).json(result);
