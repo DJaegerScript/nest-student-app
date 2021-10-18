@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Student } from 'src/student/entities/student.entity';
 import { StudentModule } from 'src/student/student.module';
 
 @Module({
@@ -14,6 +15,7 @@ import { StudentModule } from 'src/student/student.module';
       username: process.env.PG_USERNAME,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
+      entities: [Student],
       synchronize: true,
     }),
     StudentModule,
