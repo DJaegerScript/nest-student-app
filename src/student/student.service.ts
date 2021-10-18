@@ -23,19 +23,28 @@ export class StudentService extends AppService {
   }
 
   async getStudents(): Promise<ResponseBodyDTO> {
+    try {
     const results: GetStudentsDTO[] = await this.studentRepository
       .createQueryBuilder('student')
       .select(['student.id', 'student.name'])
       .getMany();
 
     if (results.length === 0)
-      return this.generateResponseBody(true, results, 'Student data is empty');
+        return this.generateResponseBody(
+          true,
+          results,
+          'Student data is empty',
+        );
 
     return this.generateResponseBody(
       true,
       results,
       'Student data retrieved successfully!',
     );
+    } catch (error) {
+      console.log(error.message);
+      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+    }
   }
 
   async storeStudent(student: CreateStudentDTO): Promise<ResponseBodyDTO> {
@@ -54,6 +63,7 @@ export class StudentService extends AppService {
   }
 
   async getStudentDetails(id: number): Promise<ResponseBodyDTO> {
+    try {
       const results: StudentDetailsDTO = await this.studentRepository.findOne(
       id,
     );
@@ -66,14 +76,35 @@ export class StudentService extends AppService {
       results,
       'Student data retrieved successfully!',
     );
+    } catch (error) {
+      console.log(error.message);
+      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+    }
   }
 
   async updateStudent(
     id: number,
     student: UpdateStudentDTO,
   ): Promise<ResponseBodyDTO> {
+    try {
     const results = await this.studentRepository.update(id, student);
 
+      if (!results.affected)
+        return this.generateResponseBody(
+          true,
+          [],
+          'Could not update, student data not found!',
+        );
+
+      return this.generateResponseBody(
+        true,
+        [],
+        'Student data updated successfully!',
+      );
+    } catch (error) {
+      console.log(error.message);
+      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+    }
     return this.generateResponseBody(
       true,
       results,
