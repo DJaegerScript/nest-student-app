@@ -6,7 +6,7 @@ import { StudentModule } from 'src/student/student.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.PG_HOST,
