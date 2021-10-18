@@ -6,7 +6,7 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 
 import { StudentService } from './student.service';
 
-import { CreateStudentRequest } from './dto/create-student.dto';
+import { CreateStudentDTO } from './dto/create-student.dto';
 
 @Controller('student')
 export class StudentController {
@@ -22,7 +22,7 @@ export class StudentController {
 
   @Post()
   async storeStudent(
-    @Body() body: CreateStudentRequest,
+    @Body() body: CreateStudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.storeStudent(

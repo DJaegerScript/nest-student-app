@@ -6,7 +6,7 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 
 import { Repository } from 'typeorm';
 
-import { CreateStudentRequest } from './dto/create-student.dto';
+import { CreateStudentDTO } from './dto/create-student.dto';
 import { Student } from './entities/student.entity';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class StudentService extends AppService {
     );
   }
 
-  async storeStudent(student: CreateStudentRequest): Promise<ResponseBodyDTO> {
+  async storeStudent(student: CreateStudentDTO): Promise<ResponseBodyDTO> {
     try {
       await this.studentRepository.save(student);
 
