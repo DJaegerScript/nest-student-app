@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -19,10 +20,6 @@ import {
 } from './dto/student.dto';
 
 import { StudentService } from './student.service';
-
-import { CreateStudentDTO } from './dto/create-student.dto';
-import { GetStudentDetailsParamsDTO } from './dto/get-student-details.dto';
-import { UpdateStudentDTO } from './dto/update-student.dto';
 
 @Controller('student')
 export class StudentController {
@@ -74,6 +71,16 @@ export class StudentController {
       params.studentId,
       body,
     );
+
+    return response.status(HttpStatus.OK).json(result);
+  }
+
+  @Delete('/:studentId')
+  async deleteStudent(
+    @Param() params: StudentParamsDTO,
+    @Res() response: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const result = await this.studentService.deleteStudent(params.studentId);
 
     return response.status(HttpStatus.OK).json(result);
   }

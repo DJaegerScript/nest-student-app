@@ -24,23 +24,23 @@ export class StudentService extends AppService {
 
   async getStudents(): Promise<ResponseBodyDTO> {
     try {
-    const results: GetStudentsDTO[] = await this.studentRepository
-      .createQueryBuilder('student')
-      .select(['student.id', 'student.name'])
-      .getMany();
+      const results: GetStudentsDTO[] = await this.studentRepository
+        .createQueryBuilder('student')
+        .select(['student.id', 'student.name'])
+        .getMany();
 
-    if (results.length === 0)
+      if (results.length === 0)
         return this.generateResponseBody(
           true,
           results,
           'Student data is empty',
         );
 
-    return this.generateResponseBody(
-      true,
-      results,
-      'Student data retrieved successfully!',
-    );
+      return this.generateResponseBody(
+        true,
+        results,
+        'Student data retrieved successfully!',
+      );
     } catch (error) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
@@ -65,17 +65,17 @@ export class StudentService extends AppService {
   async getStudentDetails(id: number): Promise<ResponseBodyDTO> {
     try {
       const results: StudentDetailsDTO = await this.studentRepository.findOne(
-      id,
-    );
+        id,
+      );
 
-    if (!results)
-      return this.generateResponseBody(true, [], 'Student data not found!');
+      if (!results)
+        return this.generateResponseBody(true, [], 'Student data not found!');
 
-    return this.generateResponseBody(
-      true,
-      results,
-      'Student data retrieved successfully!',
-    );
+      return this.generateResponseBody(
+        true,
+        results,
+        'Student data retrieved successfully!',
+      );
     } catch (error) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
@@ -87,7 +87,7 @@ export class StudentService extends AppService {
     student: UpdateStudentDTO,
   ): Promise<ResponseBodyDTO> {
     try {
-    const results = await this.studentRepository.update(id, student);
+      const results = await this.studentRepository.update(id, student);
 
       if (!results.affected)
         return this.generateResponseBody(
@@ -105,10 +105,27 @@ export class StudentService extends AppService {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
-    return this.generateResponseBody(
-      true,
-      results,
-      'Student data retrieved successfully!',
-    );
+  }
+
+  async deleteStudent(id: number): Promise<ResponseBodyDTO> {
+    try {
+      const results = await this.studentRepository.delete(id);
+
+      if (!results.affected)
+        return this.generateResponseBody(
+          true,
+          [],
+          'Could not delete, student data not found!',
+        );
+
+      return this.generateResponseBody(
+        true,
+        [],
+        'Student data deleted successfully!',
+      );
+    } catch (error) {
+      console.log(error.message);
+      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+    }
   }
 }
