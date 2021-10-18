@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { AppService } from 'src/app/app.service';
 import { ResponseBodyDTO } from 'src/app/dto/app.dto';
+
 import { Repository } from 'typeorm';
+
 import { CreateStudentRequest } from './dto/create-student.dto';
 import { Student } from './entities/student.entity';
 
@@ -15,9 +18,18 @@ export class StudentService extends AppService {
     super();
   }
 
-export class StudentService {
-  getAllStudentsService(): string {
-    return 'All student retrieved';
+  async getStudents(): Promise<ResponseBodyDTO> {
+    const results = await this.studentRepository.find();
+
+    if (results.length === 0)
+      return this.generateResponseBody(true, results, 'Student data is empty');
+
+    return this.generateResponseBody(
+      true,
+      results,
+      'Student data retrieved successfully!',
+    );
+  }
 
   async storeStudent(student: CreateStudentRequest): Promise<ResponseBodyDTO> {
     try {

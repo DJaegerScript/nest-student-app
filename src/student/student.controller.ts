@@ -1,13 +1,24 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+
 import { Response } from 'express';
+
 import { ResponseBodyDTO } from 'src/app/dto/app.dto';
-import { CreateStudentRequest } from './dto/create-student.dto';
 
 import { StudentService } from './student.service';
+
+import { CreateStudentRequest } from './dto/create-student.dto';
 
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
+
+  @Get()
+  async getAllStudents(
+    @Res() response: Response,
+  ): Promise<Response<any, Record<string, unknown>>> {
+    const result: ResponseBodyDTO = await this.studentService.getStudents();
+    return response.status(HttpStatus.OK).json(result);
+  }
 
   @Post()
   async storeStudent(
