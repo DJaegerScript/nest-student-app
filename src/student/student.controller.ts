@@ -12,6 +12,11 @@ import {
 import { Response } from 'express';
 
 import { ResponseBodyDTO } from 'src/app/dto/app.dto';
+import {
+  CreateStudentDTO,
+  StudentParamsDTO,
+  UpdateStudentDTO,
+} from './dto/student.dto';
 
 import { StudentService } from './student.service';
 
@@ -49,7 +54,7 @@ export class StudentController {
 
   @Get('/:studentId')
   async getStudentDetails(
-    @Param() params: GetStudentDetailsParamsDTO,
+    @Param() params: StudentParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const result = await this.studentService.getStudentDetails(
@@ -61,7 +66,7 @@ export class StudentController {
 
   @Put('/:studentId')
   async updateStudent(
-    @Param() params: GetStudentDetailsParamsDTO,
+    @Param() params: StudentParamsDTO,
     @Body() body: UpdateStudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {

@@ -5,11 +5,12 @@ import { AppService } from 'src/app/app.service';
 import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 
 import { Repository } from 'typeorm';
-
-import { CreateStudentDTO } from './dto/create-student.dto';
-import { GetStudentDetailsDTO } from './dto/get-student-details.dto';
-import { GetStudentsDTO } from './dto/get-students.dto';
-import { UpdateStudentDTO } from './dto/update-student.dto';
+import {
+  CreateStudentDTO,
+  GetStudentsDTO,
+  StudentDetailsDTO,
+  UpdateStudentDTO,
+} from './dto/student.dto';
 import { Student } from './entities/student.entity';
 
 @Injectable()
@@ -53,7 +54,7 @@ export class StudentService extends AppService {
   }
 
   async getStudentDetails(id: number): Promise<ResponseBodyDTO> {
-    const results: GetStudentDetailsDTO = await this.studentRepository.findOne(
+      const results: StudentDetailsDTO = await this.studentRepository.findOne(
       id,
     );
 
