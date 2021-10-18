@@ -7,6 +7,7 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 import { Repository } from 'typeorm';
 
 import { CreateStudentDTO } from './dto/create-student.dto';
+import { GetStudentsDTO } from './dto/get-students.dto';
 import { Student } from './entities/student.entity';
 
 @Injectable()
@@ -19,7 +20,10 @@ export class StudentService extends AppService {
   }
 
   async getStudents(): Promise<ResponseBodyDTO> {
-    const results = await this.studentRepository.find();
+    const results: GetStudentsDTO[] = await this.studentRepository
+      .createQueryBuilder('student')
+      .select(['student.id', 'student.name'])
+      .getMany();
 
     if (results.length === 0)
       return this.generateResponseBody(true, results, 'Student data is empty');
