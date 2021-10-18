@@ -15,7 +15,7 @@ export class StudentController {
   @Get()
   async getAllStudents(
     @Res() response: Response,
-  ): Promise<Response<any, Record<string, unknown>>> {
+  ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.getStudents();
     return response.status(HttpStatus.OK).json(result);
   }
@@ -24,7 +24,7 @@ export class StudentController {
   async storeStudent(
     @Body() body: CreateStudentRequest,
     @Res() response: Response,
-  ): Promise<Response<any, Record<string, unknown>>> {
+  ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.storeStudent(
       body,
     );

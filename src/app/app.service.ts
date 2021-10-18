@@ -5,7 +5,7 @@ import { ResponseBodyDTO } from './dto/app.dto';
 export class AppService {
   protected generateResponseBody(
     success: boolean,
-    content: any[] | Record<string, unknown> = [],
+    content: any[] | Record<string, any>,
     message = '',
   ): ResponseBodyDTO {
     return { success, content, message };
