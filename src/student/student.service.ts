@@ -7,6 +7,7 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 import { Repository } from 'typeorm';
 
 import { CreateStudentDTO } from './dto/create-student.dto';
+import { GetStudentDetailsDTO } from './dto/get-student-details.dto';
 import { GetStudentsDTO } from './dto/get-students.dto';
 import { Student } from './entities/student.entity';
 
@@ -48,5 +49,16 @@ export class StudentService extends AppService {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
+  }
+
+  async getStudentDetails(id: number): Promise<ResponseBodyDTO> {
+    const results: GetStudentDetailsDTO = await this.studentRepository.findOne(
+      id,
+    );
+    return this.generateResponseBody(
+      true,
+      results,
+      'Student data retrieved successfully!',
+    );
   }
 }
