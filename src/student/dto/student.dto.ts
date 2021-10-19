@@ -1,13 +1,7 @@
-export class CreateStudentDTO {
+export class StudentDTO {
   name: string;
   age: number;
   address: string;
-}
-
-export class UpdateStudentDTO {
-  name?: string;
-  age?: number;
-  address?: string;
 }
 
 export class GetStudentsDTO {
