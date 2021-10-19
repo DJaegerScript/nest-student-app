@@ -6,10 +6,10 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 
 import { Repository } from 'typeorm';
 import {
-  CreateStudentDTO,
+  StudentDTO,
   GetStudentsDTO,
   StudentDetailsDTO,
-  UpdateStudentDTO,
+  ModifiedStudentDTO,
 } from './dto/student.dto';
 import { Student } from './entities/student.entity';
 
@@ -41,22 +41,24 @@ export class StudentService extends AppService {
         results,
         'Student data retrieved successfully!',
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
   }
 
-  async storeStudent(student: CreateStudentDTO): Promise<ResponseBodyDTO> {
+  async storeStudent(student: StudentDTO): Promise<ResponseBodyDTO> {
     try {
-      const results = await this.studentRepository.save(student);
+      const results: StudentDetailsDTO = await this.studentRepository.save(
+        student,
+      );
 
       return this.generateResponseBody(
         true,
         results,
         'Student data created successfully!',
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
@@ -76,7 +78,7 @@ export class StudentService extends AppService {
         results,
         'Student data retrieved successfully!',
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
@@ -84,10 +86,13 @@ export class StudentService extends AppService {
 
   async updateStudent(
     id: number,
-    student: UpdateStudentDTO,
+    student: StudentDTO,
   ): Promise<ResponseBodyDTO> {
     try {
-      const results = await this.studentRepository.update(id, student);
+      const results: ModifiedStudentDTO = await this.studentRepository.update(
+        id,
+        student,
+      );
 
       if (!results.affected)
         return this.generateResponseBody(
@@ -101,7 +106,7 @@ export class StudentService extends AppService {
         [],
         'Student data updated successfully!',
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }
@@ -109,7 +114,9 @@ export class StudentService extends AppService {
 
   async deleteStudent(id: number): Promise<ResponseBodyDTO> {
     try {
-      const results = await this.studentRepository.delete(id);
+      const results: ModifiedStudentDTO = await this.studentRepository.delete(
+        id,
+      );
 
       if (!results.affected)
         return this.generateResponseBody(
@@ -123,7 +130,7 @@ export class StudentService extends AppService {
         [],
         'Student data deleted successfully!',
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       return this.generateResponseBody(false, [], 'Oops, something went wrong');
     }

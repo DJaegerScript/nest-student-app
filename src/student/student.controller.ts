@@ -13,11 +13,7 @@ import {
 import { Response } from 'express';
 
 import { ResponseBodyDTO } from 'src/app/dto/app.dto';
-import {
-  CreateStudentDTO,
-  StudentParamsDTO,
-  UpdateStudentDTO,
-} from './dto/student.dto';
+import { StudentDTO, StudentParamsDTO } from './dto/student.dto';
 
 import { StudentService } from './student.service';
 
@@ -36,7 +32,7 @@ export class StudentController {
 
   @Post()
   async storeStudent(
-    @Body() body: CreateStudentDTO,
+    @Body() body: StudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.storeStudent(
@@ -54,25 +50,24 @@ export class StudentController {
     @Param() params: StudentParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result = await this.studentService.getStudentDetails(
-      params.studentId,
-    );
+    const results: ResponseBodyDTO =
+      await this.studentService.getStudentDetails(params.studentId);
 
-    return response.status(HttpStatus.OK).json(result);
+    return response.status(HttpStatus.OK).json(results);
   }
 
   @Put('/:studentId')
   async updateStudent(
     @Param() params: StudentParamsDTO,
-    @Body() body: UpdateStudentDTO,
+    @Body() body: StudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result = await this.studentService.updateStudent(
+    const results: ResponseBodyDTO = await this.studentService.updateStudent(
       params.studentId,
       body,
     );
 
-    return response.status(HttpStatus.OK).json(result);
+    return response.status(HttpStatus.OK).json(results);
   }
 
   @Delete('/:studentId')
@@ -80,8 +75,10 @@ export class StudentController {
     @Param() params: StudentParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result = await this.studentService.deleteStudent(params.studentId);
+    const results: ResponseBodyDTO = await this.studentService.deleteStudent(
+      params.studentId,
+    );
 
-    return response.status(HttpStatus.OK).json(result);
+    return response.status(HttpStatus.OK).json(results);
   }
 }
