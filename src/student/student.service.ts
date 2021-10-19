@@ -49,11 +49,11 @@ export class StudentService extends AppService {
 
   async storeStudent(student: CreateStudentDTO): Promise<ResponseBodyDTO> {
     try {
-      await this.studentRepository.save(student);
+      const results = await this.studentRepository.save(student);
 
       return this.generateResponseBody(
         true,
-        [],
+        results,
         'Student data created successfully!',
       );
     } catch (error) {
