@@ -25,3 +25,7 @@ export class StudentDetailsDTO {
   age: number;
   address: string;
 }
+
+export class ModifiedStudentDTO {
+  affected?: number;
+}
