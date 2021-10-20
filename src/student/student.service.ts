@@ -4,13 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AppService } from 'src/app/app.service';
 import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 
-import { Repository } from 'typeorm';
-import {
-  StudentDTO,
-  GetStudentsDTO,
-  StudentDetailsDTO,
-  ModifiedStudentDTO,
-} from './dto/student.dto';
+import { DeepPartial, Repository } from 'typeorm';
+
+import { ModifiedStudentInterface } from './interfaces/modified-student.interface';
+import { StudentDetailsInterface } from './interfaces/student-details.interface';
+import { StudentsInterface } from './interfaces/students.interface';
 import { Student } from './entities/student.entity';
 
 @Injectable()
@@ -24,7 +22,7 @@ export class StudentService extends AppService {
 
   async getStudents(): Promise<ResponseBodyInterface> {
     try {
-      const results: GetStudentsDTO[] = await this.studentRepository
+      const results: StudentsInterface[] = await this.studentRepository
         .createQueryBuilder('student')
         .select(['student.id', 'student.name'])
         .getMany();
@@ -32,25 +30,26 @@ export class StudentService extends AppService {
       return results.length === 0
         ? this.generateEmptyResponseBody('Student')
         : this.generateResponseBody(
-          true,
-        'Student data retrieved successfully!',
+            true,
+            'Student data retrieved successfully!',
             results,
-      );
+          );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }
   }
 
+  async storeStudent(
+    student: DeepPartial<Student>,
   ): Promise<ResponseBodyInterface> {
     try {
-      const results: StudentDetailsDTO = await this.studentRepository.save(
-        student,
-      );
+      const results: StudentDetailsInterface =
+        await this.studentRepository.save(student);
 
       return this.generateResponseBody(
         true,
-        results,
         'Student data created successfully!',
+        results,
       );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
@@ -59,17 +58,18 @@ export class StudentService extends AppService {
 
   async getStudentDetails(id: number): Promise<ResponseBodyInterface> {
     try {
-      const results: StudentDetailsDTO = await this.studentRepository.findOne(
-        id,
-      );
+      const results: StudentDetailsInterface =
+        await this.studentRepository.findOne(id, {
+          relations: ['classroom'],
+        });
 
       return !results
         ? this.generateEmptyResponseBody('Student')
         : this.generateResponseBody(
-        true,
-        'Student data retrieved successfully!',
+            true,
+            'Student data retrieved successfully!',
             results,
-      );
+          );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }
@@ -77,19 +77,11 @@ export class StudentService extends AppService {
 
   async updateStudent(
     id: number,
+    student: DeepPartial<Student>,
   ): Promise<ResponseBodyInterface> {
     try {
-      const results: ModifiedStudentDTO = await this.studentRepository.update(
-        id,
-        student,
-      );
-
-      if (!results.affected)
-        return this.generateResponseBody(
-          true,
-          [],
-          'Could not update, student data not found!',
-        );
+      const results: ModifiedStudentInterface =
+        await this.studentRepository.update(id, student);
 
       return results.affected
         ? this.generateResponseBody(true, 'Student data updated successfully!')
@@ -101,16 +93,8 @@ export class StudentService extends AppService {
 
   async deleteStudent(id: number): Promise<ResponseBodyInterface> {
     try {
-      const results: ModifiedStudentDTO = await this.studentRepository.delete(
-        id,
-      );
-
-      if (!results.affected)
-        return this.generateResponseBody(
-          true,
-          [],
-          'Could not delete, student data not found!',
-        );
+      const results: ModifiedStudentInterface =
+        await this.studentRepository.delete(id);
 
       return results.affected
         ? this.generateResponseBody(true, 'Student data deleted successfully!')
