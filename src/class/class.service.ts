@@ -19,13 +19,12 @@ export class ClassService extends AppService {
     try {
       const results: GetClassDTO[] = await this.classRepository.find();
 
-      if (results.length === 0)
-        return this.generateResponseBody(true, results, 'Class data is empty');
-
-      return this.generateResponseBody(
+      return results.length === 0
+        ? this.generateEmptyResponseBody('Class')
+        : this.generateResponseBody(
         true,
-        results,
         'Class data retrieved successfully!',
+            results,
       );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
@@ -50,13 +49,12 @@ export class ClassService extends AppService {
     try {
       const results = await this.classRepository.findOne(id);
 
-      if (!results)
-        return this.generateResponseBody(true, [], 'Class data not found!');
-
-      return this.generateResponseBody(
+      return !results
+        ? this.generateEmptyResponseBody('Class')
+        : this.generateResponseBody(
         true,
-        results,
         'Class data retrieved successfully!',
+            results,
       );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
@@ -74,11 +72,9 @@ export class ClassService extends AppService {
           'Could not update, class data not found!',
         );
 
-      return this.generateResponseBody(
-        true,
-        [],
-        'Class data updated successfully!',
-      );
+      return results.affected
+        ? this.generateResponseBody(true, 'Class data updated successfully!')
+        : this.generateEmptyResponseBody('Class', 'update');
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }
@@ -94,11 +90,9 @@ export class ClassService extends AppService {
           'Could not delete, student data not found!',
         );
 
-      return this.generateResponseBody(
-        true,
-        [],
-        'Student data deleted successfully!',
-      );
+      return results.affected
+        ? this.generateResponseBody(true, 'Class data deleted successfully!')
+        : this.generateEmptyResponseBody('Class', 'delete');
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }

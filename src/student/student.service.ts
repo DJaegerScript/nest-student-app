@@ -29,17 +29,12 @@ export class StudentService extends AppService {
         .select(['student.id', 'student.name'])
         .getMany();
 
-      if (results.length === 0)
-        return this.generateResponseBody(
+      return results.length === 0
+        ? this.generateEmptyResponseBody('Student')
+        : this.generateResponseBody(
           true,
-          results,
-          'Student data is empty',
-        );
-
-      return this.generateResponseBody(
-        true,
-        results,
         'Student data retrieved successfully!',
+            results,
       );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
@@ -68,13 +63,12 @@ export class StudentService extends AppService {
         id,
       );
 
-      if (!results)
-        return this.generateResponseBody(true, [], 'Student data not found!');
-
-      return this.generateResponseBody(
+      return !results
+        ? this.generateEmptyResponseBody('Student')
+        : this.generateResponseBody(
         true,
-        results,
         'Student data retrieved successfully!',
+            results,
       );
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
@@ -97,11 +91,9 @@ export class StudentService extends AppService {
           'Could not update, student data not found!',
         );
 
-      return this.generateResponseBody(
-        true,
-        [],
-        'Student data updated successfully!',
-      );
+      return results.affected
+        ? this.generateResponseBody(true, 'Student data updated successfully!')
+        : this.generateEmptyResponseBody('Student', 'update');
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }
@@ -120,11 +112,9 @@ export class StudentService extends AppService {
           'Could not delete, student data not found!',
         );
 
-      return this.generateResponseBody(
-        true,
-        [],
-        'Student data deleted successfully!',
-      );
+      return results.affected
+        ? this.generateResponseBody(true, 'Student data deleted successfully!')
+        : this.generateEmptyResponseBody('Student', 'delete');
     } catch (error: any) {
       return this.generateErrorResponseBody(error);
     }
