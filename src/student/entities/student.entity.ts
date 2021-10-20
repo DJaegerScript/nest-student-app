@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Class } from 'src/class/entities/class.entity';
+
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Student {
@@ -13,4 +15,9 @@ export class Student {
 
   @Column()
   address: string;
+
+  @ManyToOne(() => Class, (classroom) => classroom.students, {
+    onDelete: 'SET NULL',
+  })
+  classroom: Class;
 }
