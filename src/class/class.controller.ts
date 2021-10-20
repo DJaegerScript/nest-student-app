@@ -13,10 +13,13 @@ import { Response } from 'express';
 import { AppController } from 'src/app/app.controller';
 import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 import { ClassService } from './class.service';
-import { ClassDTO, ClassParamsDTO } from './dto/class.dto';
+import { ClassesInterface } from './interfaces/classes.interface';
 
 @Controller('class')
 export class ClassController extends AppController {
+  constructor(private readonly classService: ClassService) {
+    super();
+  }
 
   @Get()
   async getClasses(
@@ -29,28 +32,31 @@ export class ClassController extends AppController {
 
   @Post()
   async storeClass(
-    @Body() body: ClassDTO,
+    @Body() body: ClassesInterface,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const results: ResponseBodyInterface = await this.classService.storeClass(
+      body,
+    );
 
     return this.sendResponse(results, response, HttpStatus.CREATED);
   }
 
   @Get('/:classId')
   async getClassDetails(
-    @Param() params: ClassParamsDTO,
+    @Param('classId') classId: number,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const results: ResponseBodyInterface =
       await this.classService.getClassDetails(classId);
+
     return this.sendResponse(results, response);
   }
 
   @Put('/:classId')
   async updateClass(
-    @Param() params: ClassParamsDTO,
-    @Body() body: ClassDTO,
+    @Param('classId') classId: number,
+    @Body() body: ClassesInterface,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const results: ResponseBodyInterface = await this.classService.updateClass(
@@ -63,7 +69,7 @@ export class ClassController extends AppController {
 
   @Delete('/:classId')
   async deleteClass(
-    @Param() params: ClassParamsDTO,
+    @Param('classId') classId: number,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const results: ResponseBodyInterface = await this.classService.deleteClass(
