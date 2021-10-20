@@ -16,6 +16,7 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 import { StudentDTO, StudentParamsDTO } from './dto/student.dto';
 
 import { StudentService } from './student.service';
+import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 import { AppController } from 'src/app/app.controller';
 
 @Controller('student')
@@ -25,7 +26,7 @@ export class StudentController extends AppController {
   async getAllStudents(
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result: ResponseBodyDTO = await this.studentService.getStudents();
+    const results: ResponseBodyInterface =
 
     return this.sendResponse(results, response);
   }
@@ -35,9 +36,7 @@ export class StudentController extends AppController {
     @Body() body: StudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result: ResponseBodyDTO = await this.studentService.storeStudent(
-      body,
-    );
+    const results: ResponseBodyInterface =
 
     return this.sendResponse(results, response, HttpStatus.CREATED);
   }
@@ -47,8 +46,7 @@ export class StudentController extends AppController {
     @Param() params: StudentParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO =
-      await this.studentService.getStudentDetails(params.studentId);
+    const results: ResponseBodyInterface =
 
     return this.sendResponse(results, response);
   }
@@ -59,10 +57,7 @@ export class StudentController extends AppController {
     @Body() body: StudentDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO = await this.studentService.updateStudent(
-      params.studentId,
-      body,
-    );
+    const results: ResponseBodyInterface =
 
     return this.sendResponse(results, response);
   }
@@ -72,9 +67,7 @@ export class StudentController extends AppController {
     @Param() params: StudentParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO = await this.studentService.deleteStudent(
-      params.studentId,
-    );
+    const results: ResponseBodyInterface =
 
     return this.sendResponse(results, response);
   }

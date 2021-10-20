@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { AppService } from 'src/app/app.service';
-import { ResponseBodyDTO } from 'src/app/dto/app.dto';
+import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 
 import { Repository } from 'typeorm';
 import {
@@ -22,7 +22,7 @@ export class StudentService extends AppService {
     super();
   }
 
-  async getStudents(): Promise<ResponseBodyDTO> {
+  async getStudents(): Promise<ResponseBodyInterface> {
     try {
       const results: GetStudentsDTO[] = await this.studentRepository
         .createQueryBuilder('student')
@@ -47,7 +47,7 @@ export class StudentService extends AppService {
     }
   }
 
-  async storeStudent(student: StudentDTO): Promise<ResponseBodyDTO> {
+  ): Promise<ResponseBodyInterface> {
     try {
       const results: StudentDetailsDTO = await this.studentRepository.save(
         student,
@@ -64,7 +64,7 @@ export class StudentService extends AppService {
     }
   }
 
-  async getStudentDetails(id: number): Promise<ResponseBodyDTO> {
+  async getStudentDetails(id: number): Promise<ResponseBodyInterface> {
     try {
       const results: StudentDetailsDTO = await this.studentRepository.findOne(
         id,
@@ -86,8 +86,7 @@ export class StudentService extends AppService {
 
   async updateStudent(
     id: number,
-    student: StudentDTO,
-  ): Promise<ResponseBodyDTO> {
+  ): Promise<ResponseBodyInterface> {
     try {
       const results: ModifiedStudentDTO = await this.studentRepository.update(
         id,
@@ -112,7 +111,7 @@ export class StudentService extends AppService {
     }
   }
 
-  async deleteStudent(id: number): Promise<ResponseBodyDTO> {
+  async deleteStudent(id: number): Promise<ResponseBodyInterface> {
     try {
       const results: ModifiedStudentDTO = await this.studentRepository.delete(
         id,

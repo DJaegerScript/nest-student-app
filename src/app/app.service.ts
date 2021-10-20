@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ResponseBodyDTO } from './dto/app.dto';
+import { ResponseBodyInterface } from './interfaces/app.interface';
 
 @Injectable()
 export class AppService {
@@ -7,7 +7,7 @@ export class AppService {
     success: boolean,
     content: any[] | Record<string, any>,
     message = '',
-  ): ResponseBodyDTO {
+  ): ResponseBodyInterface {
     return { success, content, message };
   }
 }

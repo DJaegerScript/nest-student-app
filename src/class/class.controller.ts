@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AppController } from 'src/app/app.controller';
+import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 import { ClassService } from './class.service';
 import { ClassDTO, ClassParamsDTO } from './dto/class.dto';
 
@@ -41,6 +42,8 @@ export class ClassController extends AppController {
     @Param() params: ClassParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
+    const results: ResponseBodyInterface =
+      await this.classService.getClassDetails(classId);
     return this.sendResponse(results, response);
   }
 
@@ -50,8 +53,8 @@ export class ClassController extends AppController {
     @Body() body: ClassDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO = await this.classService.updateClass(
-      params.classId,
+    const results: ResponseBodyInterface = await this.classService.updateClass(
+      classId,
       body,
     );
 
@@ -63,8 +66,8 @@ export class ClassController extends AppController {
     @Param() params: ClassParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO = await this.classService.deleteClass(
-      params.classId,
+    const results: ResponseBodyInterface = await this.classService.deleteClass(
+      classId,
     );
 
     return this.sendResponse(results, response);

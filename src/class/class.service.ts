@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppService } from 'src/app/app.service';
-import { ResponseBodyDTO } from 'src/app/dto/app.dto';
+import { ResponseBodyInterface } from 'src/app/interfaces/app.interface';
 import { Repository } from 'typeorm';
 import { ClassDTO, GetClassDTO } from './dto/class.dto';
 import { Class } from './entities/class.entity';
@@ -15,7 +15,7 @@ export class ClassService extends AppService {
     super();
   }
 
-  async getClasses(): Promise<ResponseBodyDTO> {
+  async getClasses(): Promise<ResponseBodyInterface> {
     try {
       const results: GetClassDTO[] = await this.classRepository.find();
 
@@ -33,7 +33,7 @@ export class ClassService extends AppService {
     }
   }
 
-  async storeClass(classData: ClassDTO): Promise<ResponseBodyDTO> {
+  ): Promise<ResponseBodyInterface> {
     try {
       const results = await this.classRepository.save(classData);
 
@@ -48,7 +48,7 @@ export class ClassService extends AppService {
     }
   }
 
-  async getClassDetails(id: number): Promise<ResponseBodyDTO> {
+  async getClassDetails(id: number): Promise<ResponseBodyInterface> {
     try {
       const results = await this.classRepository.findOne(id);
 
@@ -66,7 +66,7 @@ export class ClassService extends AppService {
     }
   }
 
-  async updateClass(id: number, classData: ClassDTO): Promise<ResponseBodyDTO> {
+  ): Promise<ResponseBodyInterface> {
     try {
       const results = await this.classRepository.update(id, classData);
 
@@ -88,7 +88,7 @@ export class ClassService extends AppService {
     }
   }
 
-  async deleteClass(id: number): Promise<ResponseBodyDTO> {
+  async deleteClass(id: number): Promise<ResponseBodyInterface> {
     try {
       const results = await this.classRepository.delete(id);
       if (!results.affected)
