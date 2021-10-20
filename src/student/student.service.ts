@@ -42,8 +42,7 @@ export class StudentService extends AppService {
         'Student data retrieved successfully!',
       );
     } catch (error: any) {
-      console.log(error.message);
-      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+      return this.generateErrorResponseBody(error);
     }
   }
 
@@ -59,8 +58,7 @@ export class StudentService extends AppService {
         'Student data created successfully!',
       );
     } catch (error: any) {
-      console.log(error.message);
-      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+      return this.generateErrorResponseBody(error);
     }
   }
 
@@ -79,8 +77,7 @@ export class StudentService extends AppService {
         'Student data retrieved successfully!',
       );
     } catch (error: any) {
-      console.log(error.message);
-      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+      return this.generateErrorResponseBody(error);
     }
   }
 
@@ -106,8 +103,7 @@ export class StudentService extends AppService {
         'Student data updated successfully!',
       );
     } catch (error: any) {
-      console.log(error.message);
-      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+      return this.generateErrorResponseBody(error);
     }
   }
 
@@ -130,8 +126,7 @@ export class StudentService extends AppService {
         'Student data deleted successfully!',
       );
     } catch (error: any) {
-      console.log(error.message);
-      return this.generateResponseBody(false, [], 'Oops, something went wrong');
+      return this.generateErrorResponseBody(error);
     }
   }
 }

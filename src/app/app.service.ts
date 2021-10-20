@@ -7,7 +7,12 @@ export class AppService {
     success: boolean,
     content: any[] | Record<string, any>,
     message = '',
+    content: any[] | Record<string, any> = [],
   ): ResponseBodyInterface {
     return { success, content, message };
+  }
+  protected generateErrorResponseBody(error: any): ResponseBodyInterface {
+    console.log(error.message);
+    return this.generateResponseBody(false, 'Oops, something went wrong');
   }
 }
