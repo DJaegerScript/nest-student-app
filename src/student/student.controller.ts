@@ -16,10 +16,10 @@ import { ResponseBodyDTO } from 'src/app/dto/app.dto';
 import { StudentDTO, StudentParamsDTO } from './dto/student.dto';
 
 import { StudentService } from './student.service';
+import { AppController } from 'src/app/app.controller';
 
 @Controller('student')
-export class StudentController {
-  constructor(private readonly studentService: StudentService) {}
+export class StudentController extends AppController {
 
   @Get()
   async getAllStudents(
@@ -27,7 +27,7 @@ export class StudentController {
   ): Promise<Response<any, Record<string, any>>> {
     const result: ResponseBodyDTO = await this.studentService.getStudents();
 
-    return response.status(HttpStatus.OK).json(result);
+    return this.sendResponse(results, response);
   }
 
   @Post()
@@ -39,10 +39,7 @@ export class StudentController {
       body,
     );
 
-    if (!result.success)
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(result);
-
-    return response.status(HttpStatus.CREATED).json(result);
+    return this.sendResponse(results, response, HttpStatus.CREATED);
   }
 
   @Get('/:studentId')
@@ -53,7 +50,7 @@ export class StudentController {
     const results: ResponseBodyDTO =
       await this.studentService.getStudentDetails(params.studentId);
 
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 
   @Put('/:studentId')
@@ -67,7 +64,7 @@ export class StudentController {
       body,
     );
 
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 
   @Delete('/:studentId')
@@ -79,6 +76,6 @@ export class StudentController {
       params.studentId,
     );
 
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 }

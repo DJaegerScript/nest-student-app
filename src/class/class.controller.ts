@@ -10,21 +10,20 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ResponseBodyDTO } from 'src/app/dto/app.dto';
+import { AppController } from 'src/app/app.controller';
 import { ClassService } from './class.service';
 import { ClassDTO, ClassParamsDTO } from './dto/class.dto';
 
 @Controller('class')
-export class ClassController {
-  constructor(private readonly classService: ClassService) {}
+export class ClassController extends AppController {
 
   @Get()
   async getClasses(
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result: ResponseBodyDTO = await this.classService.getClasses();
+    const results: ResponseBodyInterface = await this.classService.getClasses();
 
-    return response.status(HttpStatus.OK).json(result);
+    return this.sendResponse(results, response);
   }
 
   @Post()
@@ -32,11 +31,9 @@ export class ClassController {
     @Body() body: ClassDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const result: ResponseBodyDTO = await this.classService.storeClass(body);
-    if (!result.success)
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(result);
+    const results: ResponseBodyInterface = await this.classService.storeClass(
 
-    return response.status(HttpStatus.CREATED).json(result);
+    return this.sendResponse(results, response, HttpStatus.CREATED);
   }
 
   @Get('/:classId')
@@ -44,10 +41,7 @@ export class ClassController {
     @Param() params: ClassParamsDTO,
     @Res() response: Response,
   ): Promise<Response<any, Record<string, any>>> {
-    const results: ResponseBodyDTO = await this.classService.getClassDetails(
-      params.classId,
-    );
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 
   @Put('/:classId')
@@ -61,7 +55,7 @@ export class ClassController {
       body,
     );
 
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 
   @Delete('/:classId')
@@ -73,6 +67,6 @@ export class ClassController {
       params.classId,
     );
 
-    return response.status(HttpStatus.OK).json(results);
+    return this.sendResponse(results, response);
   }
 }
